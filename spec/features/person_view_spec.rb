@@ -28,6 +28,12 @@ describe 'the person view', type: :feature do
       expect(current_path).to eq(person_path(person))
       expect(page).to have_content('john@example.com')
     end
+
+    it 'has links to edit email addresses' do
+      person.email_addresses.each do |email|
+        expect(page).to have_link('edit', href: edit_email_address_path(email))
+      end
+    end
   end
 
   describe 'phone numbers' do
