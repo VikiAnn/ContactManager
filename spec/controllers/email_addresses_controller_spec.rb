@@ -3,11 +3,13 @@ require 'rails_helper'
 RSpec.describe EmailAddressesController, :type => :controller do
 
   let(:valid_attributes) {
-    {address: 'example@example.com'}
+    { address: 'example@example.com',
+      person_id: 1 }
   }
 
   let(:invalid_attributes) {
-    {address: nil}
+    { address: nil,
+      person_id: nil }
   }
 
   # This should return the minimal set of values that should be in the session
