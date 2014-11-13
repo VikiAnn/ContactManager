@@ -18,13 +18,14 @@ describe 'the person view', type: :feature do
     end
 
     it 'has a link to add an email address' do
-      expect(page).to have_link('Add email address', href: new_email_address_path(person_id: person.id))
+      expect(page).to have_link('Add email address', href: new_email_address_path(contact_id: person.id, contact_type: "Person"))
     end
 
     it 'adds a new email address' do
       page.click_link('Add email address')
       page.fill_in('Address', with: 'john@example.com')
       page.click_button('Create Email address')
+      # Not passing....WTF?????
       expect(current_path).to eq(person_path(person))
       expect(page).to have_content('john@example.com')
     end
