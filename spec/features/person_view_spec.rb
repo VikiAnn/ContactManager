@@ -25,7 +25,6 @@ describe 'the person view', type: :feature do
       page.click_link('Add email address')
       page.fill_in('Address', with: 'john@example.com')
       page.click_button('Create Email address')
-      # Not passing....WTF?????
       expect(current_path).to eq(person_path(person))
       expect(page).to have_content('john@example.com')
     end

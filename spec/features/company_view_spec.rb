@@ -2,6 +2,39 @@ require 'rails_helper'
 
 describe 'the company view', type: :feature do
   let(:company) { Company.create(name: 'Big Corp, Inc') }
+  describe 'email addresses' do
+    before(:each) do
+      company.email_addresses.create(address: 'j@example.com')
+      company.email_addresses.create(address: 'j.d.@example.com')
+      visit company_path(company)
+    end
+
+    it 'shows the email addresses' do
+      company.email_addresses.each do |email|
+        expect(page).to have_content(email.address)
+      end
+
+      expect(page).to have_selector('li', text: 'j@example.com')
+    end
+
+    it 'has a link to add an email address' do
+      expect(page).to have_link('Add email address', href: new_email_address_path(contact_id: company.id, contact_type: "Company"))
+    end
+
+    it 'adds a new email address' do
+      page.click_link('Add email address')
+      page.fill_in('Address', with: 'john@example.com')
+      page.click_button('Create Email address')
+      expect(current_path).to eq(company_path(company))
+      expect(page).to have_content('john@example.com')
+    end
+
+    it 'has links to edit email addresses' do
+      company.email_addresses.each do |email|
+        expect(page).to have_link('edit', href: edit_email_address_path(email))
+      end
+    end
+  end
 
   describe 'phone numbers' do
     before(:each) do
