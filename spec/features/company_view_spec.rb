@@ -2,6 +2,7 @@ require 'rails_helper'
 
 describe 'the company view', type: :feature do
   let(:company) { Company.create(name: 'Big Corp, Inc') }
+
   describe 'email addresses' do
     before(:each) do
       company.email_addresses.create(address: 'j@example.com')
@@ -33,6 +34,35 @@ describe 'the company view', type: :feature do
       company.email_addresses.each do |email|
         expect(page).to have_link('edit', href: edit_email_address_path(email))
       end
+    end
+
+    it 'edits an email address' do
+      email = company.email_addresses.first
+      old_address = email.address
+
+      first(:link, 'edit').click
+      page.fill_in('Address', with: 'john@example.com')
+      page.click_button('Update Email address')
+      expect(current_path).to eq(company_path(company))
+      expect(page).to have_content('john@example.com')
+      expect(page).to_not have_content(old_address)
+    end
+
+    it 'has links to delete email addresses' do
+      company.email_addresses.each do |email|
+        expect(page).to have_link('delete', href: email_address_path(email))
+      end
+    end
+
+    it 'deletes an email address' do
+      email_1 = company.email_addresses.first
+      email_2 = company.email_addresses.last
+      first(:link, 'delete').click
+      first(:link, 'delete').click
+      expect(current_path).to eq(company_path(company))
+      expect(page).to_not have_content(email_1.address)
+      expect(page).to_not have_content(email_2.address)
+      expect(page).to_not have_link('delete')
     end
   end
 

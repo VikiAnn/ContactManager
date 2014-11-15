@@ -2,6 +2,7 @@ require 'rails_helper'
 
 describe 'the person view', type: :feature do
   let(:person) { Person.create(first_name: 'John', last_name: 'Doe') }
+
   describe 'email addresses' do
     before(:each) do
       person.email_addresses.create(address: 'j@example.com')
@@ -57,11 +58,12 @@ describe 'the person view', type: :feature do
       email_1 = person.email_addresses.first
       email_2 = person.email_addresses.last
       first(:link, 'delete').click
+      first(:link, 'delete').click
       expect(current_path).to eq(person_path(person))
       expect(page).to_not have_content(email_1.address)
-      # expect(page).to_not have_link('delete')
+      expect(page).to_not have_content(email_2.address)
+      expect(page).to_not have_link('delete')
     end
-
   end
 
   describe 'phone numbers' do
