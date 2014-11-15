@@ -1,5 +1,5 @@
 class EmailAddressesController < ApplicationController
-  before_action :set_email_address, only: [:show, :edit, :update, :destroy]
+  before_action :find_resource, only: [:edit, :update, :destroy]
 
   def new
     @email_address = EmailAddress.new(contact_id: params[:contact_id], contact_type: params[:contact_type])
@@ -43,10 +43,6 @@ class EmailAddressesController < ApplicationController
   end
 
   private
-    def set_email_address
-      @email_address = EmailAddress.find(params[:id])
-    end
-
     def email_address_params
       params.require(:email_address).permit(:address, :contact_id, :contact_type)
     end
