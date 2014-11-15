@@ -23,4 +23,7 @@ RSpec.describe Company, :type => :model do
     expect(email.address).to eq('me@example.com')
   end
 
+  it 'converts to a string with name' do
+    expect(company.to_s).to eq "Big Corp, Inc."
+  end
 end
